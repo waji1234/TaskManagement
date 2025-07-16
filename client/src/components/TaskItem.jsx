@@ -1,6 +1,22 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, onEdit , onDelete }) => {
+    const navigate = useNavigate()
+     const handleDelete = async () => {
+  const confirmed = window.confirm("Are you sure you want to delete this task?")
+  if (!confirmed) return
+
+  try {
+    await deleteTask(task._id)
+    toast.success("Task deleted successfully")
+    onDelete?.()
+  } catch (error) {
+    toast.error("Failed to delete task")
+  }
+}
+ 
   return (
     <div className="bg-white p-4 rounded shadow flex justify-between items-start gap-4">
       <div className="flex items-start gap-3">
@@ -26,8 +42,10 @@ const TaskItem = ({ task }) => {
         </div>
       </div>
       <div className="space-x-2">
-        <button className="text-green-600 cursor-pointer hover:underline">Edit</button>
-        <button className="text-red-500 cursor-pointer hover:underline">Delete</button>
+         <button onClick={() => navigate(`/tasks/${task._id}`)} className="bg-gray-600 text-white px-3 py-1 rounded">Details</button>
+        <button className="text-green-600 cursor-pointer hover:underline"  
+        onClick={() => onEdit(task)}>Edit</button>
+        <button onClick={handleDelete} className="text-red-500 cursor-pointer hover:underline">Delete</button>
       </div>
     </div>
   );

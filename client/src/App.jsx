@@ -1,19 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Home from './pages/Home'
+import { BrowserRouter as Router } from "react-router-dom"
+import AppRoutes from "./routes"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
-const App = () => {
-
+function App() {
   return (
-    <>
-      
-      <div className="min-h-screen bg-gray-100 p-4">
-      <Home />
-      </div>
-     
-    </>
+    <Router>
+      <AppRoutes />
+      <ToastContainer position="top-right" autoClose={3000} />
+    </Router>
   )
 }
 

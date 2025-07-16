@@ -7,21 +7,33 @@ import TaskList from '../components/TaskList';
 
 const Home = () => {
     const [showModal,setShowModal] = useState(false);
+    const [editableTask, setEditableTask] = useState(null);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [statusFilter, setStatusFilter] = useState("");
+     
+   const handleEdit = (task) => {
+    setEditableTask(task);
+    setShowModal(true);
+  };
 
+    const handleSuccess = () => {
+    setRefreshKey(prev => prev + 1);
+    setShowModal(false);
+  };
   return (
     <div className='max-w-2xl mx-auto'>
       <h1 className="text-2xl font-bold mb-6 text-center">Task Manager</h1>
       <div className='flex justify-center gap-2  '>
-         <FilterBar />
+         <FilterBar onStatusChange={setStatusFilter} />
       <button onClick={() => setShowModal(true)}         
       className="bg-green-600 flex text-white gap-1 cursor-pointer px-4 py-2 rounded mb-4" >
         <Plus /> Add Task
       </button>
       </div>
-     <TaskList />
+     <TaskList status={statusFilter} onEdit={handleEdit} refresh={refreshKey} />
     {showModal && (
         <TaskCreationModal onClose={() => setShowModal(false)}>
-            <TaskForm  />
+            <TaskForm editableTask={editableTask}   onSuccess={handleSuccess} />
         </TaskCreationModal>
     )}
     </div>

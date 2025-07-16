@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TaskItem from './TaskItem';
+import { getTasks } from '../apis/api';
  
 const dummyTasks = [
   { id: 1, title: "Sample Task 1", description: "Description for Task 1", status: "pending" },
@@ -12,16 +13,41 @@ const dummyTasks = [
 
 // ];
 
-const TaskList = () => {
+const TaskList = ({onEdit,  status = "", refresh}) => {
+   const [tasks, setTasks] = useState([])
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getTasks(status)
+        setTasks(data)
+      } catch (error) {
+        console.error("Error fetching tasks:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchTasks()
+  }, [status , refresh])
+
+  if (loading) {
+    return (
+      <div className="text-center text-gray-500 p-8 bg-white rounded shadow">
+        <p className="text-lg">Loading tasks...</p>
+      </div>
+    )
+  }
+
   return (
    <div className="space-y-4">
-      {dummyTasks.length === 0 ? (
+      {tasks.length === 0 ? (
         <div className="text-center text-gray-500 p-8 bg-white rounded shadow">
           <p className="text-lg">No tasks found.</p>
           <p className="text-sm">Click "Add Task" to create your first one!</p>
         </div>
       ) : (
-        dummyTasks.map((task) => <TaskItem key={task.id} task={task} />)
+        tasks.map((task) => <TaskItem key={task._id} task={task} onEdit={onEdit} />)
       )}
     </div>
   )
