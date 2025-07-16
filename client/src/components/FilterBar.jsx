@@ -4,7 +4,7 @@ const FilterBar = ({ onStatusChange }) => {
   return (
        <select
       onChange={(e) => onStatusChange(e.target.value)}
-      className="border p-2 rounded"
+      className="border h-[40px] p-2 rounded"
     >
       <option value="">All</option>
       <option value="pending">Pending</option>

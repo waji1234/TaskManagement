@@ -62,7 +62,7 @@ const TaskForm = ({ editableTask, onSuccess }) => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+          className="bg-blue-600 text-white cursor-pointer px-4 py-2 rounded disabled:opacity-50"
           disabled={loading}
         >
           {loading ? "Saving..." : editableTask ? "Update" : "Create"}

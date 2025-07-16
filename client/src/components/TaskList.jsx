@@ -2,18 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TaskItem from './TaskItem';
 import { getTasks } from '../apis/api';
  
-const dummyTasks = [
-  { id: 1, title: "Sample Task 1", description: "Description for Task 1", status: "pending" },
-  { id: 2, title: "Sample Task 2", description: "Description for Task 2", status: "completed" },
-  { id: 3, title: "Sample Task 3", description: "Description for Task 3", status: "pending" },
-  { id: 4, title: "Sample Task 4", description: "Description for Task 4", status: "completed" },
-];
-
-// const dummyTasks = [
-
-// ];
-
-const TaskList = ({onEdit,  status = "", refresh}) => {
+const TaskList = ({onEdit,  status = "", refresh ,  onStatusChange}) => {
    const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   useEffect(() => {
@@ -47,7 +36,10 @@ const TaskList = ({onEdit,  status = "", refresh}) => {
           <p className="text-sm">Click "Add Task" to create your first one!</p>
         </div>
       ) : (
-        tasks.map((task) => <TaskItem key={task._id} task={task} onEdit={onEdit} />)
+        tasks.map((task) => <TaskItem
+         key={task._id} task={task} onEdit={onEdit} onStatusChange={onStatusChange}
+           onDelete={() => setTasks(prev => prev.filter(t => t._id !== task._id))}
+        />)
       )}
     </div>
   )

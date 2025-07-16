@@ -10,6 +10,7 @@ const Home = () => {
     const [editableTask, setEditableTask] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
     const [statusFilter, setStatusFilter] = useState("");
+    
      
    const handleEdit = (task) => {
     setEditableTask(task);
@@ -25,12 +26,14 @@ const Home = () => {
       <h1 className="text-2xl font-bold mb-6 text-center">Task Manager</h1>
       <div className='flex justify-center gap-2  '>
          <FilterBar onStatusChange={setStatusFilter} />
-      <button onClick={() => setShowModal(true)}         
+      <button onClick={() =>{
+       setEditableTask(null); 
+       setShowModal(true)}}         
       className="bg-green-600 flex text-white gap-1 cursor-pointer px-4 py-2 rounded mb-4" >
         <Plus /> Add Task
       </button>
       </div>
-     <TaskList status={statusFilter} onEdit={handleEdit} refresh={refreshKey} />
+     <TaskList status={statusFilter} onEdit={handleEdit} onStatusChange={() => setRefreshKey(prev => prev + 1)} refresh={refreshKey} />
     {showModal && (
         <TaskCreationModal onClose={() => setShowModal(false)}>
             <TaskForm editableTask={editableTask}   onSuccess={handleSuccess} />
